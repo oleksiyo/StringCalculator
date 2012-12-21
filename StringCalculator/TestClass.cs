@@ -14,7 +14,7 @@ namespace StringCalculator
         [Fact]
         public void FailedTest1()
         {
-            Assert.True(false);
+            Assert.True(false);  // some changes 
         }
 
         [Fact]
@@ -22,11 +22,5 @@ namespace StringCalculator
         {
             throw new InvalidOperationException();
         }
-
-      /*  [RunAfterTestFailed]
-        public void TestFailed()
-        {
-            Debug.WriteLine("Run this whenever a test fails");
-        }*/
     }
 }
