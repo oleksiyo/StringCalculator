@@ -6,3 +6,4 @@ D:\GitHub\StringCalculator\StringCalculator\bin\Debug\xunit.xml
 D:\GitHub\StringCalculator\StringCalculator\bin\Debug\xunit.extensions.xml
 D:\GitHub\StringCalculator\StringCalculator\obj\Debug\StringCalculator.dll
 D:\GitHub\StringCalculator\StringCalculator\obj\Debug\StringCalculator.pdb
+D:\GitHub\StringCalculator\StringCalculator\obj\Debug\StringCalculator.csprojResolveAssemblyReference.cache

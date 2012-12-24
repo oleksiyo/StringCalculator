@@ -9,7 +9,7 @@ using Xunit.Extensions;
 
 namespace StringCalculator
 {
-    public class TestClass2
+   /* public class TestClass2
     {
         [Fact]
         public void FailedTest1()
@@ -22,5 +22,5 @@ namespace StringCalculator
         {
             throw new InvalidOperationException();
         }
-    }
+    }*/
 }
