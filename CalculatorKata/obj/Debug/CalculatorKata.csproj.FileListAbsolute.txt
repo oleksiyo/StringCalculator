@@ -1,9 +1,0 @@
-D:\GitHub\StringCalculator\CalculatorKata\bin\Debug\CalculatorKata.dll
-D:\GitHub\StringCalculator\CalculatorKata\bin\Debug\CalculatorKata.pdb
-D:\GitHub\StringCalculator\CalculatorKata\bin\Debug\xunit.dll
-D:\GitHub\StringCalculator\CalculatorKata\bin\Debug\xunit.extensions.dll
-D:\GitHub\StringCalculator\CalculatorKata\bin\Debug\xunit.xml
-D:\GitHub\StringCalculator\CalculatorKata\bin\Debug\xunit.extensions.xml
-D:\GitHub\StringCalculator\CalculatorKata\obj\Debug\CalculatorKata.csprojResolveAssemblyReference.cache
-D:\GitHub\StringCalculator\CalculatorKata\obj\Debug\CalculatorKata.dll
-D:\GitHub\StringCalculator\CalculatorKata\obj\Debug\CalculatorKata.pdb
