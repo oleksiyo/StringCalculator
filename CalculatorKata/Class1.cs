@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
+using FluentAssertions;
 
 namespace CalculatorKata
 {
@@ -13,17 +14,17 @@ namespace CalculatorKata
         const string dEnd = "]";
         const string exceptionMsg = "Negatives not allowed:";
 
-        public int Sum(string s)
+        public int Sum(string str)
         {
-            if (String.IsNullOrEmpty(s))
+            if (String.IsNullOrEmpty(str))
                 return 0;
+            var delimetersServices = new DelimetersServices();
+;
+            var listDelimeters = delimetersServices.FillDelimeters(str);
 
-            var strDelimeters = DelimetersServices.GetDelimeters(s, start, end);
-            var listDelimeters = DelimetersServices.FillDelimeters(strDelimeters, dStart, dEnd);
-
-            var substring = listDelimeters.Any(prefix => s.StartsWith(start)) ? 
-                GetSubString(s, end, "") :
-                s;
+            var substring = listDelimeters.Any(prefix => str.StartsWith(start)) ? 
+                GetSubString(str, end, "") :
+                str;
 
             var numbers = SplitStringByDelimeters(substring, listDelimeters);
             CheckContainNegativNmbers(numbers);
@@ -52,10 +53,8 @@ namespace CalculatorKata
         {
             var listNegativs = numbers.Select(x => x).Where(x => x < 0).ToList();
 
-            if (listNegativs.Count > 0)
-            {
+            if (listNegativs.Any())
                 throw new Exception(exceptionMsg + " " + string.Join(", ", listNegativs));
-            }
         }
     }
 
@@ -66,7 +65,7 @@ namespace CalculatorKata
         {
             var stringCalculator = new StringCalculator();
             var sum = stringCalculator.Sum("");
-            Assert.Equal(0, sum);
+            sum.Should().Be(0);
         }
 
         [Fact]
@@ -74,7 +73,7 @@ namespace CalculatorKata
         {
             var stringCalculator = new StringCalculator();
             var sum = stringCalculator.Sum("1,2");
-            Assert.Equal(3, sum);
+            sum.Should().Be(3);
         }
 
         [Fact]
@@ -89,7 +88,7 @@ namespace CalculatorKata
             var str = string.Join(",", listInt.Select(x => x.ToString()).ToArray());
 
             var sum = stringCalculator.Sum(str);
-            Assert.Equal(expectSum, sum);
+            sum.Should().Be(expectSum);
         }
 
         [Fact]
@@ -97,24 +96,27 @@ namespace CalculatorKata
         {
             var stringCalculator = new StringCalculator();
             var sum = stringCalculator.Sum("1,2,3\n4");
-            Assert.Equal(10, sum);
+            sum.Should().Be(10);
         }
 
         [Fact]
         public void should_return_error_if_koma_and_user_symbol_stand_together()
         {
              const string numberDChar = "//!\n1!,2!3";
+
              var stringCalculator = new StringCalculator();
              Assert.Throws<FormatException>(() => stringCalculator.Sum(numberDChar));
+
         }
 
         [Fact]
         public void input_string_should_contain_separate_string_with_numbers()
         {
             const string numberDChar = "//!\n1!2!3";
+
             var stringCalculator = new StringCalculator();
             var sum = stringCalculator.Sum(numberDChar);
-            Assert.Equal(6, sum);
+            sum.Should().Be(6);
         }
 
         [Fact]
@@ -124,7 +126,7 @@ namespace CalculatorKata
 
             var stringCalculator = new StringCalculator();
             var exception = Assert.Throws<Exception>(() => stringCalculator.Sum(numbers));
-            Assert.Equal("Negatives not allowed: -2, -9", exception.Message);
+            exception.Message.Should().Be("Negatives not allowed: -2, -9");
         }
 
         [Fact]
@@ -132,7 +134,7 @@ namespace CalculatorKata
         {
             var stringCalculator = new StringCalculator();
             var sum = stringCalculator.Sum("1;2;1001");
-            Assert.Equal(3, sum);
+            sum.Should().Be(3);
         }
 
         [Fact]
@@ -142,7 +144,7 @@ namespace CalculatorKata
 
             var stringCalculator = new StringCalculator();
             var sum = stringCalculator.Sum(str);
-            Assert.Equal(6, sum);
+            sum.Should().Be(6);
         }
 
         [Fact]
@@ -151,7 +153,7 @@ namespace CalculatorKata
             const string str = "//[*][%]\n1*2%3";
             var stringCalculator = new StringCalculator();
             var sum = stringCalculator.Sum(str);
-            Assert.Equal(6, sum);
+            sum.Should().Be(6);
         }
     }
 }

@@ -8,26 +8,27 @@ namespace CalculatorKata
 {
     public class DelimetersServices
     {
-        static public string GetDelimeters(string input, string start, string end)
+        public string GetDelimeters(string input)
         {
-            var r = new Regex(Regex.Escape(start) + "(.*?)" + Regex.Escape(end));
+            var r = new Regex(Regex.Escape(Conf.start) + "(.*?)" + Regex.Escape(Conf.end));
             var matches = r.Matches(input);
             return (from Match match in matches select match.Groups[1].Value).FirstOrDefault();
         }
 
-        static public List<string> FillDelimeters(string input, string start, string end)
+        public List<string> FillDelimeters(string input)
         {
+            var delimeter = GetDelimeters(input);
             var delimeters = new List<string> { "\n", ",", ";" };
-            if (string.IsNullOrEmpty(input))
+            if (string.IsNullOrEmpty(delimeter))
                 return delimeters;
 
-            var strRegex = Regex.Escape(start) + "(.*?)" + Regex.Escape(end);
+            var strRegex = Regex.Escape(Conf.dStart) + "(.*?)" + Regex.Escape(Conf.dEnd);
 
-            if (!Regex.Match(input, strRegex).Success && !delimeters.Contains(input))
-                delimeters.Add(input);
+            if (!Regex.Match(delimeter, strRegex).Success && !delimeters.Contains(delimeter))
+                delimeters.Add(delimeter);
 
             var r = new Regex(strRegex);
-            var matches = r.Matches(input);
+            var matches = r.Matches(delimeter);
             delimeters.AddRange(from Match match in matches select match.Groups[1].Value);
 
             return delimeters;
