@@ -17,7 +17,7 @@ namespace CalculatorKata
 
         static public List<string> FillDelimeters(string input, string start, string end)
         {
-            var delimeters = new List<string>() { "\n", ",", ";" };
+            var delimeters = new List<string> { "\n", ",", ";" };
             if (string.IsNullOrEmpty(input))
                 return delimeters;
 
@@ -68,7 +68,6 @@ public class DelimetersServicesTest
 
         var delimeters = DelimetersServices.GetDelimeters(input, start, end);
         Assert.Equal(delimeters, null);
-
     }
 
     [Fact]
