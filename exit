@@ -1,0 +1,91 @@
+[33mcommit e134088ef145fe065e2cb36bf2c93185973c47bd[m
+Author: oleksiyo <kozzzak@gmail.com>
+Date:   Mon Dec 24 12:28:27 2012 +0200
+
+    Test3
+
+ CalculatorKata/CalculatorKata.csproj               |  59 [32m+++++++++++++++++[m
+ CalculatorKata/CalculatorKata.ncrunchproject       |  20 [32m++++++[m
+ CalculatorKata/Class1.cs                           |  73 [32m+++++++++++++++++++++[m
+ CalculatorKata/Properties/AssemblyInfo.cs          |  36 [32m++++++++++[m
+ .../CalculatorKata.csproj.FileListAbsolute.txt     |   9 [32m+++[m
+ ...ulatorKata.csprojResolveAssemblyReference.cache | Bin [31m0[m -> [32m10499[m bytes
+ CalculatorKata/obj/Debug/CalculatorKata.dll        | Bin [31m0[m -> [32m6144[m bytes
+ CalculatorKata/obj/Debug/CalculatorKata.pdb        | Bin [31m0[m -> [32m17920[m bytes
+ .../DesignTimeResolveAssemblyReferencesInput.cache | Bin [31m0[m -> [32m6689[m bytes
+ ...a8c0-833c2b5aeb83ResolveAssemblyReference.cache | Bin [31m0[m -> [32m10499[m bytes
+ StringCalculator/CalculatorService.cs              |  37 [32m+++++++++++[m
+ 11 files changed, 234 insertions(+)
+
+[33mcommit d37bb327f8053af9335db62314f8be08acafbeee[m
+Author: oleksiyo <kozzzak@gmail.com>
+Date:   Mon Dec 24 12:19:56 2012 +0200
+
+    test2
+
+ StringCalculator.sln                               |   12 [32m+[m
+ StringCalculator.v11.suo                           |  Bin [31m30720[m -> [32m54784[m bytes
+ StringCalculator/StringCalculator.csproj           |    1 [32m+[m
+ StringCalculator/StringCalculator.csproj.user      |    5 [32m+[m[31m-[m
+ StringCalculator/TestClass.cs                      |    4 [32m+[m[31m-[m
+ StringCalculator/bin/Debug/StringCalculator.dll    |  Bin [31m4608[m -> [32m0[m bytes
+ StringCalculator/bin/Debug/StringCalculator.pdb    |  Bin [31m13824[m -> [32m0[m bytes
+ StringCalculator/bin/Debug/xunit.dll               |  Bin [31m68608[m -> [32m0[m bytes
+ StringCalculator/bin/Debug/xunit.extensions.dll    |  Bin [31m24064[m -> [32m0[m bytes
+ StringCalculator/bin/Debug/xunit.extensions.xml    |  811 [31m------[m
+ StringCalculator/bin/Debug/xunit.xml               | 2611 [31m--------------------[m
+ .../DesignTimeResolveAssemblyReferencesInput.cache |  Bin [31m6693[m -> [32m0[m bytes
+ .../StringCalculator.csproj.FileListAbsolute.txt   |    1 [32m+[m
+ StringCalculator/obj/Debug/StringCalculator.dll    |  Bin [31m4608[m -> [32m5120[m bytes
+ StringCalculator/obj/Debug/StringCalculator.pdb    |  Bin [31m13824[m -> [32m13824[m bytes
+ 15 files changed, 20 insertions(+), 3425 deletions(-)
+
+[33mcommit 2850a877f02ef969ac6a5d9fc35550c75ce2bc40[m
+Author: oleksiyo <kozzzak@gmail.com>
+Date:   Fri Dec 21 14:44:04 2012 +0200
+
+    1
+
+ StringCalculator.sln                               |   20 [32m+[m
+ StringCalculator.v11.suo                           |  Bin [31m0[m -> [32m30720[m bytes
+ StringCalculator/Properties/AssemblyInfo.cs        |   36 [32m+[m
+ StringCalculator/StringCalculator.csproj           |   71 [32m+[m
+ StringCalculator/StringCalculator.csproj.user      |    6 [32m+[m
+ StringCalculator/TestClass - Copy.cs               |   26 [32m+[m
+ StringCalculator/bin/Debug/StringCalculator.dll    |  Bin [31m0[m -> [32m4608[m bytes
+ StringCalculator/bin/Debug/StringCalculator.pdb    |  Bin [31m0[m -> [32m13824[m bytes
+ StringCalculator/bin/Debug/xunit.dll               |  Bin [31m0[m -> [32m68608[m bytes
+ StringCalculator/bin/Debug/xunit.extensions.dll    |  Bin [31m0[m -> [32m24064[m bytes
+ StringCalculator/bin/Debug/xunit.extensions.xml    |  811 [32m++++++[m
+ StringCalculator/bin/Debug/xunit.xml               | 2611 [32m++++++++++++++++++++[m
+ .../DesignTimeResolveAssemblyReferencesInput.cache |  Bin [31m0[m -> [32m6693[m bytes
+ .../StringCalculator.csproj.FileListAbsolute.txt   |    8 [32m+[m
+ StringCalculator/obj/Debug/StringCalculator.dll    |  Bin [31m0[m -> [32m4608[m bytes
+ StringCalculator/obj/Debug/StringCalculator.pdb    |  Bin [31m0[m -> [32m13824[m bytes
+ UpgradeLog.XML                                     |  Bin [31m0[m -> [32m708[m bytes
+ UpgradeLog.htm                                     |  Bin [31m0[m -> [32m12918[m bytes
+ _UpgradeReport_Files/UpgradeReport.css             |  118 [32m+[m
+ _UpgradeReport_Files/UpgradeReport.xslt            |  538 [32m++++[m
+ _UpgradeReport_Files/UpgradeReport_Error.png       |  Bin [31m0[m -> [32m338[m bytes
+ _UpgradeReport_Files/UpgradeReport_Information.png |  Bin [31m0[m -> [32m306[m bytes
+ _UpgradeReport_Files/UpgradeReport_Success.png     |  Bin [31m0[m -> [32m381[m bytes
+ _UpgradeReport_Files/UpgradeReport_Warning.png     |  Bin [31m0[m -> [32m292[m bytes
+ 24 files changed, 4245 insertions(+)
+
+[33mcommit a7b5b8411338c2a9959d6ee8b60d5c2bac2135eb[m
+Author: oleksiyo <kozzzak@gmail.com>
+Date:   Fri Dec 21 13:09:19 2012 +0200
+
+    test
+
+ StringCalculator/TestClass.cs | 10 [32m++[m[31m--------[m
+ 1 file changed, 2 insertions(+), 8 deletions(-)
+
+[33mcommit eb938b1533b9556208e3f9d1f9ffe76ccf10c9d9[m
+Author: oleksiyo <kozzzak@gmail.com>
+Date:   Fri Dec 21 12:12:05 2012 +0200
+
+    Test2
+
+ StringCalculator/TestClass.cs | 32 [32m++++++++++++++++++++++++++++++++[m
+ 1 file changed, 32 insertions(+)
