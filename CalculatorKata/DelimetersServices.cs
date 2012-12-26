@@ -38,18 +38,12 @@ namespace CalculatorKata
 
 public class DelimetersServicesTest
 {
-    const string start = "//";
-    const string end = "\n";
-    const string dStart = "[";
-    const string dEnd = "]";
-
-
     [Fact]
     public void should_get_one_delimiter_with_any_length()
     {
         const string input = "//[***]\n1***2***3";
-
-        var delimeters = DelimetersServices.GetDelimeters(input, start, end);
+        var delimetersServices = new DelimetersServices();
+        var delimeters = delimetersServices.GetDelimeters(input);
         Assert.Equal(delimeters, "[***]");
     }
 
@@ -58,7 +52,8 @@ public class DelimetersServicesTest
     {
         const string input = "//[***][!!!]\n1***2!!!3";
 
-        var delimeters = DelimetersServices.GetDelimeters(input, start, end);
+        var delimetersServices = new DelimetersServices();
+        var delimeters = delimetersServices.GetDelimeters(input);
         Assert.Equal(delimeters, "[***][!!!]");
     }
 
@@ -67,7 +62,8 @@ public class DelimetersServicesTest
     {
         const string input = "1,2,3";
 
-        var delimeters = DelimetersServices.GetDelimeters(input, start, end);
+        var delimetersServices = new DelimetersServices();
+        var delimeters = delimetersServices.GetDelimeters(input);
         Assert.Equal(delimeters, null);
     }
 
@@ -76,24 +72,27 @@ public class DelimetersServicesTest
     {
         const string input = "//;\n1;-2;3";
 
-        var delimeters = DelimetersServices.GetDelimeters(input, start, end);
+        var delimetersServices = new DelimetersServices();
+        var delimeters = delimetersServices.GetDelimeters(input);
         Assert.Equal(delimeters, ";");
     }
 
     [Fact]
     public void should_split_one_delimeter_with_any_length()
     {
-        const string input = "[***]";
-        var listDelimeters = DelimetersServices.FillDelimeters(input, dStart, dEnd);
+        const string input = "//[***]\n1***2***3";
+        var delimetersServices = new DelimetersServices();
+        var listDelimeters = delimetersServices.FillDelimeters(input);
         Assert.Equal(listDelimeters.Count, 4);
     }
 
     [Fact]
     public void should_split_more_then_one_delimeter()
     {
-        const string input = "[***][!!!]";
+        const string input = "//[***][!!!]\n1***2!!!3";
 
-        var listDelimeters = DelimetersServices.FillDelimeters(input, dStart, dEnd);
+        var delimetersServices = new DelimetersServices();
+        var listDelimeters = delimetersServices.FillDelimeters(input);
         Assert.Equal(listDelimeters.Count, 5);
     }
 
@@ -102,7 +101,8 @@ public class DelimetersServicesTest
     {
         const string input = "";
 
-        var listDelimeters = DelimetersServices.FillDelimeters(input, dStart, dEnd);
+        var delimetersServices = new DelimetersServices();
+        var listDelimeters = delimetersServices.FillDelimeters(input);
         Assert.Equal(listDelimeters.Count, 3);
     }
 
@@ -111,7 +111,8 @@ public class DelimetersServicesTest
     {
         const string input = ";";
 
-        var listDelimeters = DelimetersServices.FillDelimeters(input, dStart, dEnd);
+        var delimetersServices = new DelimetersServices();
+        var listDelimeters = delimetersServices.FillDelimeters(input);
         Assert.Equal(listDelimeters.Count, 3);
     }
 }

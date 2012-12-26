@@ -8,22 +8,16 @@ namespace CalculatorKata
 {
     public class StringCalculator
     {
-        const string start = "//";
-        const string end = "\n";
-        const string dStart = "[";
-        const string dEnd = "]";
-        const string exceptionMsg = "Negatives not allowed:";
-
         public int Sum(string str)
         {
             if (String.IsNullOrEmpty(str))
                 return 0;
             var delimetersServices = new DelimetersServices();
-;
+            
             var listDelimeters = delimetersServices.FillDelimeters(str);
 
-            var substring = listDelimeters.Any(prefix => str.StartsWith(start)) ? 
-                GetSubString(str, end, "") :
+            var substring = listDelimeters.Any(prefix => str.StartsWith(Conf.start)) ?
+                GetSubString(str, Conf.end, "") :
                 str;
 
             var numbers = SplitStringByDelimeters(substring, listDelimeters);
@@ -46,7 +40,7 @@ namespace CalculatorKata
 
         private int CalculateSum(IEnumerable<int> numbers)
         {
-            return numbers.Select(x=>x).Where(z => z >= 0 && z <= 1000).Sum();
+            return numbers.Select(x => x).Where(z => z >= 0 && z <= 1000).Sum();
         }
 
         private void CheckContainNegativNmbers(IEnumerable<int> numbers)
@@ -54,7 +48,7 @@ namespace CalculatorKata
             var listNegativs = numbers.Select(x => x).Where(x => x < 0).ToList();
 
             if (listNegativs.Any())
-                throw new Exception(exceptionMsg + " " + string.Join(", ", listNegativs));
+                throw new Exception(Conf.exceptionMsg + " " + string.Join(", ", listNegativs));
         }
     }
 
@@ -102,10 +96,12 @@ namespace CalculatorKata
         [Fact]
         public void should_return_error_if_koma_and_user_symbol_stand_together()
         {
-             const string numberDChar = "//!\n1!,2!3";
+            const string numberDChar = "//!\n1!,2!3";
 
-             var stringCalculator = new StringCalculator();
-             Assert.Throws<FormatException>(() => stringCalculator.Sum(numberDChar));
+            var stringCalculator = new StringCalculator();
+            //Assert.Throws<FormatException>(() => stringCalculator.Sum(numberDChar));
+            Action act = () => stringCalculator.Sum(numberDChar);
+            act.ShouldThrow<FormatException>();
 
         }
 
