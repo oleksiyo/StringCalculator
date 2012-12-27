@@ -10,28 +10,37 @@ namespace CalculatorKata
 {
     public class DelimetersServices : IDelimetersServices
     {
-        public string GetDelimeters(string input)
-        {
-            var r = new Regex(Conf.RegexBetweenTwoStrings);
-            var matches = r.Matches(input);
-            return (from Match match in matches select match.Groups[1].Value).FirstOrDefault();
-        }
+        List<string> delimeters = new List<string> { "\n", ",", ";" };
+        private readonly int partOfRegularExpression = 1;
 
         public List<string> FillDelimeters(string input)
         {
-            var delimeter = GetDelimeters(input);
-            var delimeters = new List<string> { "\n", ",", ";" };
-            if (string.IsNullOrEmpty(delimeter))
+            var stringOfDelimeters = GetStringOfDelimeters(input);
+
+            if (string.IsNullOrEmpty(stringOfDelimeters))
                 return delimeters;
 
-            if (!Regex.Match(delimeter, Conf.RegexForDelimeters).Success && !delimeters.Contains(delimeter))
-                delimeters.Add(delimeter);
+            if (!Regex.Match(stringOfDelimeters, Configuration.RegexForDelimeter.ToString()).Success && !delimeters.Contains(stringOfDelimeters))
+                delimeters.Add(stringOfDelimeters);
 
-            var r = new Regex(Conf.RegexForDelimeters);
-            var matches = r.Matches(delimeter);
-            delimeters.AddRange(from Match match in matches select match.Groups[1].Value);
+            delimeters.AddRange(GetListSubStringsByRegex(stringOfDelimeters, Configuration.RegexForDelimeter));
 
             return delimeters;
+        }
+
+        public string GetStringOfDelimeters(string input)
+        {
+            return GetListSubStringsByRegex(input, Configuration.RegexForSubString).Count > 0
+                ? GetListSubStringsByRegex(input, Configuration.RegexForSubString)[0]
+                : "";
+        }
+
+        private List<string> GetListSubStringsByRegex(string input, Regex regex)
+        {
+            var matches = regex.Matches(input);
+            var listSubStrings = new List<string>();
+            listSubStrings.AddRange(from Match match in matches select match.Groups[partOfRegularExpression].Value);
+            return listSubStrings;
         }
     }
 }
@@ -43,7 +52,7 @@ public class DelimetersServicesTest
     {
         const string input = "//[***]\n1***2***3";
         var delimetersServices = new DelimetersServices();
-        var delimeters = delimetersServices.GetDelimeters(input);
+        var delimeters = delimetersServices.GetStringOfDelimeters(input);
         delimeters.Should().Be("[***]");
     }
 
@@ -53,7 +62,7 @@ public class DelimetersServicesTest
         const string input = "//[***][!!!]\n1***2!!!3";
 
         var delimetersServices = new DelimetersServices();
-        var delimeters = delimetersServices.GetDelimeters(input);
+        var delimeters = delimetersServices.GetStringOfDelimeters(input);
         delimeters.Should().Be("[***][!!!]");
     }
 
@@ -63,8 +72,8 @@ public class DelimetersServicesTest
         const string input = "1,2,3";
 
         var delimetersServices = new DelimetersServices();
-        var delimeters = delimetersServices.GetDelimeters(input);
-        delimeters.Should().Be(null);
+        var delimeters = delimetersServices.GetStringOfDelimeters(input);
+        delimeters.Should().Be("");
 
 
     }
@@ -75,7 +84,7 @@ public class DelimetersServicesTest
         const string input = "//;\n1;-2;3";
 
         var delimetersServices = new DelimetersServices();
-        var delimeters = delimetersServices.GetDelimeters(input);
+        var delimeters = delimetersServices.GetStringOfDelimeters(input);
         delimeters.Should().Be(";");
     }
 

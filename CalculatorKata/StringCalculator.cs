@@ -17,7 +17,6 @@ namespace CalculatorKata
             this.delimetersServices = delimetersServices;
         }
 
-
         public int Sum(string stringNumbers)
         {
             if (String.IsNullOrEmpty(stringNumbers))
@@ -25,53 +24,51 @@ namespace CalculatorKata
 
             var listDelimeters = delimetersServices.FillDelimeters(stringNumbers);
 
-            var substring = listDelimeters.Any(prefix => stringNumbers.StartsWith(Conf.start)) ?
-                GetSubString(stringNumbers, Conf.end, "") :
+            var substringNumbers = listDelimeters.Any(prefix => stringNumbers.StartsWith(Configuration.startSubString)) ?
+                GetSubStringInRange(stringNumbers, Configuration.endSubString, "") :
                 stringNumbers;
 
-            var numbers = SplitStringByDelimeters(substring, listDelimeters);
-            CheckContainNegativNambers(numbers);
+            var numbers = SplitStringByDelimeters(substringNumbers, listDelimeters);
+            CheckContainNegativeNambers(numbers);
 
-            return CalculateSum(numbers);
+            return CalculatinSumInRange(numbers, Configuration.startRange, Configuration.endRange);
         }
 
-        private List<int> SplitStringByDelimeters(string str, List<string> listDelimeters)
+        private List<int> SplitStringByDelimeters(string input, List<string> listDelimeters)
         {
-            return str.Split(listDelimeters.ToArray(), StringSplitOptions.None).ToList().ConvertAll(int.Parse);
+            return input.Split(listDelimeters.ToArray(), StringSplitOptions.None).ToList().ConvertAll(int.Parse);
         }
 
-        private string GetSubString(string input, string strStart, string strEnd)
+        private string GetSubStringInRange(string input, string start, string end)
         {
-            var startIndex = input.IndexOf(strStart, StringComparison.Ordinal);
-            var endIndex = String.IsNullOrEmpty(strEnd) ? input.Length : input.IndexOf(strEnd, StringComparison.Ordinal);
+            var startIndex = input.IndexOf(start, StringComparison.Ordinal);
+            var endIndex = String.IsNullOrEmpty(end) ? input.Length : input.IndexOf(end, StringComparison.Ordinal);
             return input.Substring(startIndex + 1, endIndex - startIndex - 1);
         }
 
-        private int CalculateSum(IEnumerable<int> numbers)
+        private int CalculatinSumInRange(IEnumerable<int> numbers, int startRange, int endRenge)
         {
-            return numbers.Select(x => x).Where(z => z >= 0 && z <= 1000).Sum();
+            return numbers.Select(x => x).Where(z => z >= startRange && z <= endRenge).Sum();
         }
 
-        private void CheckContainNegativNambers(IEnumerable<int> numbers)
+        private void CheckContainNegativeNambers(IEnumerable<int> numbers)
         {
             var listNegativs = numbers.Select(x => x).Where(x => x < 0).ToList();
 
             if (listNegativs.Any())
-                throw new Exception(Conf.exceptionMsg + " " + string.Join(", ", listNegativs));
+                throw new Exception(Configuration.exceptionMsg + " " + string.Join(", ", listNegativs));
         }
     }
 
     public class StringCalculatorTests
     {
         private StringCalculator stringCalculator;
+        readonly IDelimetersServices delimetersServices = Substitute.For<IDelimetersServices>();
 
         public StringCalculatorTests()
         {
-            IDelimetersServices delimetersServices = new DelimetersServices();
             stringCalculator = new StringCalculator(delimetersServices);
         }
-
-        #region Calculation rules
 
         [Fact]
         public void should_return_0_for_empty_string()
@@ -83,6 +80,9 @@ namespace CalculatorKata
         [Fact]
         public void should_return_1_for_1_as_string()
         {
+            delimetersServices.FillDelimeters(Arg.Any<string>())
+                .Returns(new List<string> { "\n", ",", ";" });
+
             var sum = stringCalculator.Sum("1,2");
             sum.Should().Be(3);
         }
@@ -91,6 +91,9 @@ namespace CalculatorKata
         public void should_work_with_unknown_amount_of_numbers()
         {
             var random = new Random();
+
+            delimetersServices.FillDelimeters(Arg.Any<string>())
+                    .Returns(new List<string> { "\n", ",", ";" });
 
             var listInt = Enumerable.Range(0, random.Next(100))
                 .Select(r => random.Next(10)).ToList();
@@ -104,6 +107,9 @@ namespace CalculatorKata
         [Fact]
         public void should_separete_use_user_symbols()
         {
+            delimetersServices.FillDelimeters(Arg.Any<string>())
+                 .Returns(new List<string> { "\n", ",", ";" });
+
             var sum = stringCalculator.Sum("1,2,3\n4");
             sum.Should().Be(10);
         }
@@ -112,17 +118,20 @@ namespace CalculatorKata
         public void should_return_error_if_koma_and_user_symbol_stand_together()
         {
             const string numberDChar = "//!\n1!,2!3";
-
+            delimetersServices.FillDelimeters(Arg.Any<string>())
+                 .Returns(new List<string> { "\n", ",", ";", "!" });
             //Assert.Throws<FormatException>(() => stringCalculator.Sum(numberDChar));
             Action act = () => stringCalculator.Sum(numberDChar);
             act.ShouldThrow<FormatException>();
-
         }
 
         [Fact]
         public void input_string_should_contain_separate_string_with_numbers()
         {
             const string numberDChar = "//!\n1!2!3";
+
+            delimetersServices.FillDelimeters(Arg.Any<string>())
+                .Returns(new List<string> { "\n", ",", ";", "!"});
 
             var sum = stringCalculator.Sum(numberDChar);
             sum.Should().Be(6);
@@ -133,6 +142,8 @@ namespace CalculatorKata
         {
             const string numbers = "1;-2;3;-9";
 
+            delimetersServices.FillDelimeters(Arg.Any<string>())
+                .Returns(new List<string> { "\n", ",", ";" });
             var exception = Assert.Throws<Exception>(() => stringCalculator.Sum(numbers));
             exception.Message.Should().Be("Negatives not allowed: -2, -9");
         }
@@ -140,6 +151,8 @@ namespace CalculatorKata
         [Fact]
         public void numbers_more_then_1000_should_be_ignore()
         {
+            delimetersServices.FillDelimeters(Arg.Any<string>())
+                .Returns(new List<string> { "\n", ",", ";" });
             var sum = stringCalculator.Sum("1;2;1001");
             sum.Should().Be(3);
         }
@@ -149,6 +162,8 @@ namespace CalculatorKata
         {
             const string str = "//[***]\n1***2***3";
 
+            delimetersServices.FillDelimeters(Arg.Any<string>())
+                .Returns(new List<string> { "\n", ",", ";", "***" });
             var sum = stringCalculator.Sum(str);
             sum.Should().Be(6);
         }
@@ -157,29 +172,10 @@ namespace CalculatorKata
         public void should_work_with_multiple_delimiter()
         {
             const string str = "//[*][%]\n1*2%3";
+            delimetersServices.FillDelimeters(Arg.Any<string>())
+                .Returns(new List<string> { "\n", ",", ";", "*","%" });
             var sum = stringCalculator.Sum(str);
             sum.Should().Be(6);
         }
-
-        #endregion
-
-
-        #region Test Private Methods
-
-        [Fact]
-        public void TEST()
-        {
-            const string str = "//[***]\n1***2***3";
-            var delimetersServices = Substitute.For<IDelimetersServices>();
-            delimetersServices.FillDelimeters(Arg.Any<string>())
-                .Returns(new List<string> { "\n", ",", ";", "***" });
-
-            var calculator = new StringCalculator(delimetersServices);
-            var sum = calculator.Sum(str);
-            sum.Should().Be(6);
-        }
-
-        #endregion
-
     }
 }

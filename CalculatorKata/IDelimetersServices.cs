@@ -8,7 +8,7 @@ namespace CalculatorKata
 {
     public interface IDelimetersServices
     {
-        string GetDelimeters(string input);
+        string GetStringOfDelimeters(string input);
         List<string> FillDelimeters(string input);
     }
 }
