@@ -2,15 +2,17 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using CalculatorKata;
+using NSubstitute;
 using Xunit;
+using FluentAssertions;
 
 namespace CalculatorKata
 {
-    public class DelimetersServices
+    public class DelimetersServices : IDelimetersServices
     {
         public string GetDelimeters(string input)
         {
-            var r = new Regex(Regex.Escape(Conf.start) + "(.*?)" + Regex.Escape(Conf.end));
+            var r = new Regex(Conf.RegexBetweenTwoStrings);
             var matches = r.Matches(input);
             return (from Match match in matches select match.Groups[1].Value).FirstOrDefault();
         }
@@ -22,12 +24,10 @@ namespace CalculatorKata
             if (string.IsNullOrEmpty(delimeter))
                 return delimeters;
 
-            var strRegex = Regex.Escape(Conf.dStart) + "(.*?)" + Regex.Escape(Conf.dEnd);
-
-            if (!Regex.Match(delimeter, strRegex).Success && !delimeters.Contains(delimeter))
+            if (!Regex.Match(delimeter, Conf.RegexForDelimeters).Success && !delimeters.Contains(delimeter))
                 delimeters.Add(delimeter);
 
-            var r = new Regex(strRegex);
+            var r = new Regex(Conf.RegexForDelimeters);
             var matches = r.Matches(delimeter);
             delimeters.AddRange(from Match match in matches select match.Groups[1].Value);
 
@@ -44,7 +44,7 @@ public class DelimetersServicesTest
         const string input = "//[***]\n1***2***3";
         var delimetersServices = new DelimetersServices();
         var delimeters = delimetersServices.GetDelimeters(input);
-        Assert.Equal(delimeters, "[***]");
+        delimeters.Should().Be("[***]");
     }
 
     [Fact]
@@ -54,7 +54,7 @@ public class DelimetersServicesTest
 
         var delimetersServices = new DelimetersServices();
         var delimeters = delimetersServices.GetDelimeters(input);
-        Assert.Equal(delimeters, "[***][!!!]");
+        delimeters.Should().Be("[***][!!!]");
     }
 
     [Fact]
@@ -64,7 +64,9 @@ public class DelimetersServicesTest
 
         var delimetersServices = new DelimetersServices();
         var delimeters = delimetersServices.GetDelimeters(input);
-        Assert.Equal(delimeters, null);
+        delimeters.Should().Be(null);
+
+
     }
 
     [Fact]
@@ -74,7 +76,7 @@ public class DelimetersServicesTest
 
         var delimetersServices = new DelimetersServices();
         var delimeters = delimetersServices.GetDelimeters(input);
-        Assert.Equal(delimeters, ";");
+        delimeters.Should().Be(";");
     }
 
     [Fact]
@@ -83,7 +85,7 @@ public class DelimetersServicesTest
         const string input = "//[***]\n1***2***3";
         var delimetersServices = new DelimetersServices();
         var listDelimeters = delimetersServices.FillDelimeters(input);
-        Assert.Equal(listDelimeters.Count, 4);
+        listDelimeters.Count.Should().Be(4);
     }
 
     [Fact]
@@ -93,7 +95,7 @@ public class DelimetersServicesTest
 
         var delimetersServices = new DelimetersServices();
         var listDelimeters = delimetersServices.FillDelimeters(input);
-        Assert.Equal(listDelimeters.Count, 5);
+        listDelimeters.Count.Should().Be(5);
     }
 
     [Fact]
@@ -103,7 +105,7 @@ public class DelimetersServicesTest
 
         var delimetersServices = new DelimetersServices();
         var listDelimeters = delimetersServices.FillDelimeters(input);
-        Assert.Equal(listDelimeters.Count, 3);
+        listDelimeters.Count.Should().Be(3);
     }
 
     [Fact]
@@ -113,6 +115,6 @@ public class DelimetersServicesTest
 
         var delimetersServices = new DelimetersServices();
         var listDelimeters = delimetersServices.FillDelimeters(input);
-        Assert.Equal(listDelimeters.Count, 3);
+        listDelimeters.Count.Should().Be(3);
     }
 }
