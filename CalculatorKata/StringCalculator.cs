@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using FluentAssertions;
 using NSubstitute;
 using Xunit;
@@ -10,7 +9,7 @@ namespace CalculatorKata
 {
     public class StringCalculator
     {
-        private IDelimetersServices delimetersServices;
+        private readonly IDelimetersServices delimetersServices;
 
         public StringCalculator(IDelimetersServices delimetersServices)
         {
@@ -24,26 +23,26 @@ namespace CalculatorKata
 
             var listDelimeters = delimetersServices.FillDelimeters(stringNumbers);
 
-            var substringNumbers = listDelimeters.Any(prefix => stringNumbers.StartsWith(Configuration.startSubString)) ?
-                GetSubStringInRange(stringNumbers, Configuration.endSubString, "") :
+            var substringNumbers = listDelimeters.Any(prefix => stringNumbers.StartsWith(DefineConstantValues.startSubString)) ?
+                GetSubStringInRange(stringNumbers, DefineConstantValues.endSubString, "") :
                 stringNumbers;
 
             var numbers = SplitStringByDelimeters(substringNumbers, listDelimeters);
             CheckContainNegativeNambers(numbers);
 
-            return CalculatinSumInRange(numbers, Configuration.startRange, Configuration.endRange);
+            return CalculatinSumInRange(numbers, DefineConstantValues.startRange, DefineConstantValues.endRange);
         }
 
         private List<int> SplitStringByDelimeters(string input, List<string> listDelimeters)
         {
             return input.Split(listDelimeters.ToArray(), StringSplitOptions.None).ToList().ConvertAll(int.Parse);
         }
-
+        
         private string GetSubStringInRange(string input, string start, string end)
         {
             var startIndex = input.IndexOf(start, StringComparison.Ordinal);
             var endIndex = String.IsNullOrEmpty(end) ? input.Length : input.IndexOf(end, StringComparison.Ordinal);
-            return input.Substring(startIndex + 1, endIndex - startIndex - 1);
+            return input.Substring(startIndex + DefineConstantValues.moveNumber, endIndex - startIndex - DefineConstantValues.moveNumber);
         }
 
         private int CalculatinSumInRange(IEnumerable<int> numbers, int startRange, int endRenge)
@@ -56,13 +55,13 @@ namespace CalculatorKata
             var listNegativs = numbers.Select(x => x).Where(x => x < 0).ToList();
 
             if (listNegativs.Any())
-                throw new Exception(Configuration.exceptionMsg + " " + string.Join(", ", listNegativs));
+                throw new Exception(DefineConstantValues.exceptionMsg + " " + string.Join(", ", listNegativs));
         }
     }
 
     public class StringCalculatorTests
     {
-        private StringCalculator stringCalculator;
+        private readonly StringCalculator stringCalculator;
         readonly IDelimetersServices delimetersServices = Substitute.For<IDelimetersServices>();
 
         public StringCalculatorTests()
@@ -82,7 +81,6 @@ namespace CalculatorKata
         {
             delimetersServices.FillDelimeters(Arg.Any<string>())
                 .Returns(new List<string> { "\n", ",", ";" });
-
             var sum = stringCalculator.Sum("1,2");
             sum.Should().Be(3);
         }
@@ -109,7 +107,6 @@ namespace CalculatorKata
         {
             delimetersServices.FillDelimeters(Arg.Any<string>())
                  .Returns(new List<string> { "\n", ",", ";" });
-
             var sum = stringCalculator.Sum("1,2,3\n4");
             sum.Should().Be(10);
         }
@@ -132,7 +129,6 @@ namespace CalculatorKata
 
             delimetersServices.FillDelimeters(Arg.Any<string>())
                 .Returns(new List<string> { "\n", ",", ";", "!"});
-
             var sum = stringCalculator.Sum(numberDChar);
             sum.Should().Be(6);
         }

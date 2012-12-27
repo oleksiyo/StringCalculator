@@ -2,7 +2,7 @@
 
 namespace CalculatorKata
 {
-    public class Configuration
+    public class DefineConstantValues
     {
         public static string startSubString = "//";
         public static string endSubString = "\n";
@@ -12,6 +12,7 @@ namespace CalculatorKata
         const string regex = "(.*?)";
         public static int startRange = 0;
         public static int endRange = 1000;
+        public const int moveNumber = 1;
 
         public static Regex RegexForSubString
         {

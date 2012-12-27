@@ -52,7 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="StringCalculator.cs" />
-    <Compile Include="Configuration.cs" />
+    <Compile Include="DefineConstantValues.cs" />
     <Compile Include="DelimetersServices.cs" />
     <Compile Include="IDelimetersServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
