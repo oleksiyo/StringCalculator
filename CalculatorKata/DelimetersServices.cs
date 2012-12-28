@@ -14,20 +14,20 @@ namespace CalculatorKata
 
         public List<string> FillDelimeters(string input)
         {
-            var stringOfDelimeters = GetListSubStringsByRegex(input, DefineConstantValues.RegexForSubString).FirstOrDefault();
+            var stringOfDelimeters = GetListSubStringsByRegex(input, GetConstantValue.RegexForSubString).FirstOrDefault();
 
             if (string.IsNullOrEmpty(stringOfDelimeters))
                 return delimeters;
 
-            if (!Regex.Match(stringOfDelimeters, DefineConstantValues.RegexForDelimeter.ToString()).Success && !delimeters.Contains(stringOfDelimeters))
+            if (!Regex.Match(stringOfDelimeters, GetConstantValue.RegexForDelimeter.ToString()).Success && !delimeters.Contains(stringOfDelimeters))
                 delimeters.Add(stringOfDelimeters);
 
-            delimeters.AddRange(GetListSubStringsByRegex(stringOfDelimeters, DefineConstantValues.RegexForDelimeter));
+            delimeters.AddRange(GetListSubStringsByRegex(stringOfDelimeters, GetConstantValue.RegexForDelimeter));
 
             return delimeters;
         }
 
-        private List<string> GetListSubStringsByRegex(string input, Regex regex)
+        private IEnumerable<string> GetListSubStringsByRegex(string input, Regex regex)
         {
             var matches = regex.Matches(input);
             var listSubStrings = new List<string>();

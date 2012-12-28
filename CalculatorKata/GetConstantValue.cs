@@ -2,7 +2,7 @@
 
 namespace CalculatorKata
 {
-    public class DefineConstantValues
+    public class GetConstantValue
     {
         public static string startSubString = "//";
         public static string endSubString = "\n";

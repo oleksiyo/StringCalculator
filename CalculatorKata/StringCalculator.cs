@@ -23,14 +23,14 @@ namespace CalculatorKata
 
             var listDelimeters = delimetersServices.FillDelimeters(stringNumbers);
 
-            var substringNumbers = listDelimeters.Any(prefix => stringNumbers.StartsWith(DefineConstantValues.startSubString)) ?
-                GetSubStringInRange(stringNumbers, DefineConstantValues.endSubString, "") :
+            var substringNumbers = listDelimeters.Any(prefix => stringNumbers.StartsWith(GetConstantValue.startSubString)) ?
+                GetSubStringInRange(stringNumbers, GetConstantValue.endSubString, "") :
                 stringNumbers;
 
             var numbers = SplitStringByDelimeters(substringNumbers, listDelimeters);
             CheckContainNegativeNambers(numbers);
 
-            return CalculatinSumInRange(numbers, DefineConstantValues.startRange, DefineConstantValues.endRange);
+            return CalculatinSumInRange(numbers, GetConstantValue.startRange, GetConstantValue.endRange);
         }
 
         private List<int> SplitStringByDelimeters(string input, List<string> listDelimeters)
@@ -42,7 +42,7 @@ namespace CalculatorKata
         {
             var startIndex = input.IndexOf(start, StringComparison.Ordinal);
             var endIndex = String.IsNullOrEmpty(end) ? input.Length : input.IndexOf(end, StringComparison.Ordinal);
-            return input.Substring(startIndex + DefineConstantValues.moveNumber, endIndex - startIndex - DefineConstantValues.moveNumber);
+            return input.Substring(startIndex + GetConstantValue.moveNumber, endIndex - startIndex - GetConstantValue.moveNumber);
         }
 
         private int CalculatinSumInRange(IEnumerable<int> numbers, int startRange, int endRenge)
@@ -55,7 +55,7 @@ namespace CalculatorKata
             var listNegativs = numbers.Select(x => x).Where(x => x < 0).ToList();
 
             if (listNegativs.Any())
-                throw new Exception(DefineConstantValues.exceptionMsg + " " + string.Join(", ", listNegativs));
+                throw new Exception(GetConstantValue.exceptionMsg + " " + string.Join(", ", listNegativs));
         }
     }
 
